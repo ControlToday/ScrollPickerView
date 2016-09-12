@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ScrollPickerView">
+        <attr name="text_size_max" format="dimension" />
+        <attr name="text_size_min" format="dimension" />
+        <attr name="text_lines" format="integer" />
+        <attr name="text_color_default" format="color" />
+        <attr name="text_color_selected" format="color" />
+        <attr name="divide_color_default" format="color" />
+        <attr name="divide_color_selected" format="color" />
+    </declare-styleable>
+</resources>
