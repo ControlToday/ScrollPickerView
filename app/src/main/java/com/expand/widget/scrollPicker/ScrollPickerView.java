@@ -86,12 +86,12 @@ public class ScrollPickerView extends TextView {
 
     public ScrollPickerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initFieldValues(context, attrs, defStyleAttr);
+        initAttrs(context, attrs, defStyleAttr);
         initPaint();
         initVelocityTracker();
     }
 
-    private void initFieldValues(Context context, AttributeSet attrs, int defStyleAttr) {
+    private void initAttrs(Context context, AttributeSet attrs, int defStyleAttr) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.ScrollPickerView,
                 defStyleAttr, 0);
         textSizeMax = array.getDimensionPixelSize(R.styleable.ScrollPickerView_text_size_max,
@@ -111,6 +111,7 @@ public class ScrollPickerView extends TextView {
                 textColorDefault);
         divideColorSelected = array.getColor(R.styleable.ScrollPickerView_divide_color_selected,
                 textColorSelected);
+        array.recycle();
     }
 
     private void initPaint() {

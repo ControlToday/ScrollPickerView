@@ -9,4 +9,17 @@
         <attr name="divide_color_default" format="color" />
         <attr name="divide_color_selected" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="BannerView">
+        <attr name="default_loading_image" format="reference" />
+        <attr name="default_load_failed_image" format="reference" />
+        <attr name="auto_play" format="boolean" />
+        <attr name="animation_seconds" format="float" />
+        <attr name="animation_interval_seconds" format="float" />
+        <attr name="indicator_width" format="dimension" />
+        <attr name="indicator_height" format="dimension" />
+        <attr name="indicator_margin" format="dimension" />
+        <attr name="indicator_drawable_selected" format="reference" />
+        <attr name="indicator_drawable_unselected" format="reference" />
+    </declare-styleable>
 </resources>
