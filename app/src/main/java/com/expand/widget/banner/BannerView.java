@@ -26,13 +26,13 @@ public class BannerView extends FrameLayout {
     private Drawable defaultLoadingImage;
     private Drawable defaultLoadFailedImage;
     private boolean isAutoPlay;
-    private long animationMilliseconds;
-    private long animationIntervalMilliseconds;
+    private Drawable indicatorDrawableSelected;
+    private Drawable indicatorDrawableUnselected;
     private int indicatorWidth;
     private int indicatorHeight;
     private int indicatorMargin;
-    private Drawable indicatorDrawableSelected;
-    private Drawable indicatorDrawableUnselected;
+    private long animationMilliseconds;
+    private long animationIntervalMilliseconds;
 
     BitmapUtils bitmapUtils;
 
@@ -113,37 +113,6 @@ public class BannerView extends FrameLayout {
 
     private void initAnimation() {
         setAutoPlay(isAutoPlay);
-    }
-
-    private void setIndicatorMoves() {
-        viewPager.setPageTransformer(false, new ViewPager.PageTransformer() {
-            @Override
-            public void transformPage(View page, float position) {
-                final float normalizedposition = Math.abs(Math.abs(position) - 1);
-                page.setAlpha(normalizedposition);
-                page.setRotationY(position * -30);
-            }
-        });
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                float realPosition = position % imageUrls.size() + positionOffset;
-                float trans = (indicatorWidth + indicatorMargin) * realPosition;
-                int maxTrans = indicatorsLayout.getWidth() - (indicatorMargin + indicatorWidth) / 2;
-                if (trans > maxTrans) {
-                    trans = trans - indicatorsLayout.getWidth();
-                }
-                selectPoint.setTranslationX(trans);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
     }
 
     @NonNull
@@ -255,6 +224,36 @@ public class BannerView extends FrameLayout {
         setIndicatorMoves();
     }
 
+    private void setIndicatorMoves() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                float realPosition = position % imageUrls.size() + positionOffset;
+                float trans = (indicatorWidth + indicatorMargin) * realPosition;
+                int maxTrans = indicatorsLayout.getWidth() - (indicatorMargin + indicatorWidth) / 2;
+                if (trans > maxTrans) {
+                    trans = trans - indicatorsLayout.getWidth();
+                }
+                selectPoint.setTranslationX(trans);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+
+    public void setIndicatorsVisibility(boolean visibility) {
+        if(visibility) {
+            indicatorsLayout.setVisibility(View.VISIBLE);
+        } else {
+            indicatorsLayout.setVisibility(View.GONE);
+        }
+    }
     public void setImageUrls(ArrayList<String> imageUrls) {
         this.imageUrls = imageUrls;
         setBannerAdapter();
