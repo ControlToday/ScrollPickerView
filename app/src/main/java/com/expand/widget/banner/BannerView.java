@@ -217,7 +217,10 @@ public class BannerView extends FrameLayout {
     }
 
     private void setBannerAdapter() {
-        viewPager.setAdapter(new BannerAdapter(getContext(), imageUrls, bitmapUtils));
+        BannerAdapter adapter = new BannerAdapter(getContext(), imageUrls, bitmapUtils);
+        viewPager.setAdapter(adapter);
+        int pos = Integer.MAX_VALUE / imageUrls.size() / 2 * imageUrls.size();
+        viewPager.setCurrentItem(pos);
         removeView(indicatorsLayout);
         indicatorsLayout = getIndicators();
         addView(indicatorsLayout);
@@ -248,12 +251,13 @@ public class BannerView extends FrameLayout {
     }
 
     public void setIndicatorsVisibility(boolean visibility) {
-        if(visibility) {
+        if (visibility) {
             indicatorsLayout.setVisibility(View.VISIBLE);
         } else {
             indicatorsLayout.setVisibility(View.GONE);
         }
     }
+
     public void setImageUrls(ArrayList<String> imageUrls) {
         this.imageUrls = imageUrls;
         setBannerAdapter();
