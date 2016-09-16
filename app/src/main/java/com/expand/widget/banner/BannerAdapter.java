@@ -2,7 +2,6 @@ package com.expand.widget.banner;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,51 +16,40 @@ import java.util.ArrayList;
 public class BannerAdapter extends PagerAdapter {
     Context context;
     private BitmapUtils bitmapUtils;
-    private ArrayList<ImageView> imageViews;
+    private ArrayList<String> urls;
 
     public BannerAdapter(Context context, ArrayList<String> urls,
                          BitmapUtils bitmapUtils) {
         this.context = context;
         this.bitmapUtils = bitmapUtils;
-        initImageViews(urls);
+        this.urls = urls;
     }
 
-    private void initImageViews(ArrayList<String> urls) {
-        if (urls == null || urls.size() == 0)
-            return;
-        ViewGroup.LayoutParams layoutParams  = new ViewGroup.LayoutParams(
+    private ImageView getImageView(String url) {
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
-
-        imageViews = new ArrayList<>();
-        for (int i = 0; i < urls.size(); i++) {
-            String url = urls.get(i);
-            ImageView imageView = new ImageView(context);
-            imageView.setLayoutParams(layoutParams);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageViews.add(imageView);
-            bitmapUtils.display(imageView, url);
-        }
+        ImageView imageView = new ImageView(context);
+        imageView.setLayoutParams(layoutParams);
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        bitmapUtils.display(imageView, url);
+        return imageView;
     }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        int pos = position % imageViews.size();
-        ImageView imageView = imageViews.get(pos);
-        if (imageView.getParent() != null) {
-            ((ViewPager) imageView
-                    .getParent()).removeView(imageView);
-        }
+        int pos = position % urls.size();
+        ImageView imageView = getImageView(urls.get(pos));
         container.addView(imageView);
         return imageView;
     }
 
     @Override
     public int getCount() {
-        if (imageViews == null || imageViews.size() == 0) {
+        if (urls == null || urls.size() == 0) {
             return 0;
         }
-        if (imageViews.size() == 1) {
+        if (urls.size() == 1) {
             return 1;
         }
         return Integer.MAX_VALUE;
@@ -74,8 +62,6 @@ public class BannerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        int pos = position % imageViews.size();
-        ImageView imageView = imageViews.get(pos);
-        container.removeView(imageView);
+        container.removeView((View) object);
     }
 }
