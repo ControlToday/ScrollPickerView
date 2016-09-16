@@ -106,9 +106,20 @@ public class BannerView extends FrameLayout {
     }
 
     private void initChildView() {
+        initViewPager();
+        refreshIndicators();
+    }
+
+    private void initViewPager() {
         viewPager = getViewPager();
         addView(viewPager);
-        setBannerAdapter();
+    }
+
+    private void refreshIndicators() {
+        removeView(indicatorsLayout);
+        indicatorsLayout = getIndicators();
+        addView(indicatorsLayout);
+        setIndicatorMoves();
     }
 
     private void initAnimation() {
@@ -216,18 +227,23 @@ public class BannerView extends FrameLayout {
         handler.removeCallbacks(task);
     }
 
-    private void setBannerAdapter() {
+    private void refreshBannerAdapter() {
+        if (isInEditMode()) {
+            return;
+        }
         BannerAdapter adapter = new BannerAdapter(getContext(), imageUrls, bitmapUtils);
         viewPager.setAdapter(adapter);
+        if (imageUrls == null || imageUrls.size() <= 0) {
+            return;
+        }
         int pos = Integer.MAX_VALUE / imageUrls.size() / 2 * imageUrls.size();
         viewPager.setCurrentItem(pos);
-        removeView(indicatorsLayout);
-        indicatorsLayout = getIndicators();
-        addView(indicatorsLayout);
-        setIndicatorMoves();
     }
 
     private void setIndicatorMoves() {
+        if (imageUrls == null || imageUrls.size() <= 0) {
+            return;
+        }
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -260,7 +276,8 @@ public class BannerView extends FrameLayout {
 
     public void setImageUrls(ArrayList<String> imageUrls) {
         this.imageUrls = imageUrls;
-        setBannerAdapter();
+        refreshBannerAdapter();
+        refreshIndicators();
     }
 
     public int getCurrentItem() {
